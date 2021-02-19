@@ -11,22 +11,45 @@ class CartItem extends React.Component{
       img : ''
     }
     // this.increaseQuantity = this.increaseQuantity.bind(this);
+    // this.testing();
   }
 
   increaseQuantity = () => {
-    console.log(this.state);
+    // console.log(this.state);
+    // All forms of setState calls are asynchronous
     // setState form 1
-    // this.setState({ title : "Some New Title" });
+    // Batching is done, but only the last change on a state property through the latest call of this form is changed
+    // When calling setState the previous state is not up to date because of Batching
+    // this.setState({ quantity : this.state.quantity+10 }, ()=> { console.log("hey 10")});
+    // this.setState({ quantity : this.state.quantity+9 });
+    // this.setState({ quantity : this.state.quantity+5 });
+    
     // setState form 2 - if previous state is required then use form 2
+    // Batching is done in a way that the previous state is up to date when calling the callback function in
+    //  all of these calls to setState of this form
     this.setState((previousState) => {
       return {
         quantity : previousState.quantity+1
       }
     });
+    // this.setState((previousState) => {
+    //   return {
+    //     quantity : previousState.quantity+2
+    //   }
+    // });
+    // // the second paramter passed is a callback function that is called when the state is updated
+    // this.setState((previousState) => {
+    //   return {
+    //     quantity : previousState.quantity+3
+    //   }
+    // }, ()=>{
+    //   console.log(this.state);
+    // });
   }
 
   decreaseQuantity = () => {
-    if(this.state.quantity >= 1){
+    const { quantity } = this.state;
+    if(quantity >= 1){
       this.setState( (previousState) => {
         return{
           quantity : previousState.quantity-1
@@ -35,7 +58,36 @@ class CartItem extends React.Component{
     }
   }
 
+  // setState behaves as synchronous calls in promises which explains it synchronous behaviour over here
+  testing(){
+    const promise = new Promise((resolve, reject) => {
+      setTimeout( () => {
+        resolve('done');
+      }, 1500);
+    })
+
+    promise.then(() => {
+      this.setState({
+        quantity : this.state.quantity+10
+      })
+      this.setState({
+        quantity : this.state.quantity+10
+      })
+      this.setState({
+        quantity : this.state.quantity+10
+      })   
+      console.log('state', this.state);
+    });
+
+  }
+
+
+
+
+
+
   render(){
+    // console.log("render");
     const { price, title, quantity } = this.state;
     return (
       <div className = "cart-item">
