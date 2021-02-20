@@ -2,18 +2,6 @@ import React from 'react';
 
 class CartItem extends React.Component{
   
-  constructor(){
-    super();
-    this.state = {
-      price : 999,
-      title : 'Mobile Phone',
-      quantity : 1,
-      img : ''
-    }
-    // this.increaseQuantity = this.increaseQuantity.bind(this);
-    // this.testing();
-  }
-
   increaseQuantity = () => {
     // console.log(this.state);
     // All forms of setState calls are asynchronous
@@ -81,14 +69,10 @@ class CartItem extends React.Component{
 
   }
 
-
-
-
-
-
   render(){
+    console.log(this.props);  
     // console.log("render");
-    const { price, title, quantity } = this.state;
+    const { price, title, quantity } = this.props.product;
     return (
       <div className = "cart-item">
         <div className = "left-block">
