@@ -20,8 +20,8 @@ class CartItem extends React.Component{
     // setState form 1
     // Batching is done, but only the last change on a state property through the latest call of this form is changed
     // When calling setState the previous state is not up to date because of Batching
-    // this.setState({ quantity : this.state.quantity+10 }, ()=> { console.log("hey 10")});
-    // this.setState({ quantity : this.state.quantity+9 });
+    // this.setState({ quantity : this.state.quantity+20 }, ()=> { console.log(this.state.quantity)});
+    // this.setState({ quantity : this.state.quantity+9 }, ()=> { console.log(this.state.quantity)});
     // this.setState({ quantity : this.state.quantity+5 });
     
     // setState form 2 - if previous state is required then use form 2
@@ -31,12 +31,12 @@ class CartItem extends React.Component{
       return {
         quantity : previousState.quantity+1
       }
-    });
+    }, ()=> { console.log(this.state.quantity)});
     // this.setState((previousState) => {
     //   return {
     //     quantity : previousState.quantity+2
     //   }
-    // });
+    // }, ()=> { console.log(this.state.quantity)});
     // // the second paramter passed is a callback function that is called when the state is updated
     // this.setState((previousState) => {
     //   return {
