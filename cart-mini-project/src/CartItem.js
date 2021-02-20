@@ -70,7 +70,7 @@ class CartItem extends React.Component{
   }
 
   render(){
-    console.log(this.props);  
+    // console.log(this.props);  
     // console.log("render");
     const { price, title, quantity } = this.props.product;
     return (
@@ -88,13 +88,13 @@ class CartItem extends React.Component{
             alt = "increase"
             className = "action-icons"
             src = "https://www.flaticon.com/svg/vstatic/svg/748/748113.svg?token=exp=1613716588~hmac=12e74df51b96b01d251fca4bb7db7481"
-            onClick = { this.increaseQuantity } 
+            onClick = {() =>  this.props.onIncreaseQuantity(this.props.product) } 
             />
             <img 
             alt = "decrease" 
             className = "action-icons" 
             src = "https://www.flaticon.com/svg/vstatic/svg/860/860821.svg?token=exp=1613716633~hmac=dfd93c213b7046acdff4a56c63f05704"
-            onClick = { this. decreaseQuantity }
+            onClick = { () => this.props.onDecreaseQuantity(this.props.product) }
             />
             <img 
             alt = "delete" 
