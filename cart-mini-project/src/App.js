@@ -58,23 +58,31 @@ class App extends React.Component {
     const index = products.indexOf(product);
     if(products[index].quantity > 0){
       products[index].quantity -= 1;
+      
       cartQuantity -= 1;
-      this.setState({ 
-        products,
-        cartQuantity
-      });
+      if(products[index].quantity > 0){
+        this.setState({ 
+          products,
+          cartQuantity
+        });
+      }else{
+        this.handleDeleteProduct(products[index].id, true);
+        return;
+      }
     }
   }
 
-  handleDeleteProduct = (id) => {
+  handleDeleteProduct = (id, zeroed = false) => {
     let { products, cartQuantity } = this.state;
     const items = products.filter( (product) => {
       if(product.id == id){
         cartQuantity -= product.quantity;
       }
+      
       return product.id != id
     
     });
+    if(zeroed){ cartQuantity -= 1;}
     this.setState({ 
       products : items,
       cartQuantity
