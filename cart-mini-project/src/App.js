@@ -8,78 +8,108 @@ class App extends React.Component {
     super();
     this.state = {
       products : [],
-      cartQuantity : 5,
-      loading : true
+      loading : true,
+      cartTotal : 0
     }
   }
   componentDidMount(){
+    // firebase
+    //   .firestore()
+    //   .collection('products')
+    //   .get()
+    //    .then((snapshot) => {
+    //   console.log(snapshot);
+    //   snapshot.docs.map((doc) => {
+    //     console.log(doc.data);
+    //   });
+    //   const products = snapshot.docs.map((doc) => {
+    //     const data = doc.data();
+    //     data['id'] = doc.id;
+    //     return data;
+    //   })
+    //   this.setState({
+    //     products,
+    //     loading : false
+    //   })
+    // })
     firebase
       .firestore()
       .collection('products')
-      .get()
-      .then((snapshot) => {
+      .onSnapshot((snapshot) => {
         console.log(snapshot);
         snapshot.docs.map((doc) => {
           console.log(doc.data);
         });
+        let cartQuantity = 0, cartTotal = 0;
         const products = snapshot.docs.map((doc) => {
           const data = doc.data();
           data['id'] = doc.id;
+          cartQuantity += data.quantity;
+          cartTotal += data.quantity*data.price;
           return data;
         })
         this.setState({
           products,
+          cartQuantity,
+          cartTotal,
           loading : false
         })
       })
   }
   handleIncreaseQuantity = (product) => {
-    // console.log(product);
-    let {products, cartQuantity } = this.state;
+    let {products, cartQuantity, cartTotal } = this.state;
     const index = products.indexOf(product);
     cartQuantity += 1;
+    cartTotal += products[index].price;
     products[index].quantity += 1;
     this.setState({
       products,
-      cartQuantity
+      cartQuantity,
+      cartTotal
     });
   }
 
   handleDecreaseQuantity = (product) => {
-    // console.log(product);
-    let {products, cartQuantity } = this.state;
+    let {products, cartQuantity, cartTotal} = this.state;
     const index = products.indexOf(product);
+    products[index].quantity -= 1;
+    cartQuantity -= 1;
+    cartTotal -= products[index].price;
     if(products[index].quantity > 0){
-      products[index].quantity -= 1;
-      
-      cartQuantity -= 1;
-      if(products[index].quantity > 0){
-        this.setState({ 
-          products,
-          cartQuantity
-        });
-      }else{
-        this.handleDeleteProduct(products[index].id, true);
-        return;
-      }
+      this.setState({ 
+        products,
+        cartQuantity,
+        cartTotal
+      });
+    }else{
+      this.handleDeleteProduct(products[index].id, true);
+      return;
     }
+    
   }
 
   handleDeleteProduct = (id, zeroed = false) => {
-    let { products, cartQuantity } = this.state;
+    let { products, cartQuantity, cartTotal } = this.state;
     const items = products.filter( (product) => {
       if(product.id == id){
         cartQuantity -= product.quantity;
+        if(!zeroed)
+          cartTotal -= product.quantity*product.price;
+        else
+          cartTotal -= product.price;
       }
       
       return product.id != id
     
     });
-    if(zeroed){ cartQuantity -= 1;}
+    if(zeroed){
+      cartQuantity -= 1;
+    }
     this.setState({ 
       products : items,
-      cartQuantity
-    });
+      cartQuantity,
+      cartTotal
+    }, );
   } 
 
   getCartTotal = ()=>{
@@ -88,11 +118,12 @@ class App extends React.Component {
     products.forEach(product => {
       total += product.quantity*product.price;
     });
+    
     return total;
   }
 
   render(){
-    const {cartQuantity, loading} = this.state;
+    const {cartQuantity, loading, cartTotal} = this.state;
     return (
       <div className="App">
         <Navbar cartQuantity = {cartQuantity}/>
@@ -103,7 +134,7 @@ class App extends React.Component {
           onDeleteProduct = {this.handleDeleteProduct}
         />
         { loading && <h1>Loading Products</h1>}
-        <div style = { { fontSize : 20, paddingTop : 30, paddingLeft : 50}}>Total Price : {this.getCartTotal()}</div>
+        <div style = { { fontSize : 20, paddingTop : 30, paddingLeft : 50}}>Total Price : {cartTotal}</div>
       </div>
     );
   }
