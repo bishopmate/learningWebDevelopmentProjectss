@@ -124,6 +124,17 @@ class App extends React.Component {
     if(zeroed){
       cartQuantity -= 1;
     }
+
+    const docRef = this.db.collection('products').doc(id);
+    docRef
+      .delete()
+      .then(() => {
+        console.log("Deleted successfully");
+      })
+      .catch((error) => {
+        console.log("Error : ", error.message);
+      })
+
     this.setState({ 
       products : items,
       cartQuantity,
