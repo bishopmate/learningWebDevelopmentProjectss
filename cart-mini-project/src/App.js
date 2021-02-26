@@ -61,12 +61,21 @@ class App extends React.Component {
     const index = products.indexOf(product);
     cartQuantity += 1;
     cartTotal += products[index].price;
-    products[index].quantity += 1;
     this.setState({
-      products,
       cartQuantity,
       cartTotal
     });
+    const docRef = this.db.collection('products').doc(products[index].id);
+    docRef
+      .update({
+        quantity : products[index].quantity+1
+      })
+      .then(() => {
+        console.log("Product updated successfully");
+      })
+      .catch((error) => {
+        console.log("Error : ", error.message);
+      });
   }
 
   handleDecreaseQuantity = (product) => {
@@ -77,10 +86,20 @@ class App extends React.Component {
     cartTotal -= products[index].price;
     if(products[index].quantity > 0){
       this.setState({ 
-        products,
         cartQuantity,
         cartTotal
       });
+      const docRef = this.db.collection('products').doc(products[index].id);
+      docRef
+        .update({
+          quantity : products[index].quantity
+        })
+        .then(() => {
+          console.log("Product updated successfully");
+        })
+        .catch((error) => {
+          console.log("Error : ", error.message);
+        });
     }else{
       this.handleDeleteProduct(products[index].id, true);
       return;
@@ -144,11 +163,11 @@ class App extends React.Component {
     return (
       <div className="App">
         <Navbar cartQuantity = {cartQuantity}/>
-        <button onClick = {this.addProduct} style = {{
+        {/* <button onClick = {this.addProduct} style = {{
           padding : 10,
           fontSize : 20,
           borderRadius : 10
-        }}>Add a Product</button>
+        }}>Add a Product</button> */}
         <Cart
           products = {this.state.products}
           onIncreaseQuantity = {this.handleIncreaseQuantity}
