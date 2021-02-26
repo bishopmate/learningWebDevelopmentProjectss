@@ -11,6 +11,7 @@ class App extends React.Component {
       loading : true,
       cartTotal : 0
     }
+    this.db = firebase.firestore();
   }
   componentDidMount(){
     // firebase
@@ -32,8 +33,7 @@ class App extends React.Component {
     //     loading : false
     //   })
     // })
-    firebase
-      .firestore()
+    this.db
       .collection('products')
       .onSnapshot((snapshot) => {
         console.log(snapshot);
@@ -122,11 +122,33 @@ class App extends React.Component {
     return total;
   }
 
+  addProduct = () => {
+    this.db
+      .collection('products')
+      .add({
+        img : "https://www.lg.com/in/images/washing-machines/md07512155/gallery/FHT1065HNL-Washing-Machines-Front-View-D-01.jpg",
+        price : 9999,
+        quantity : 3,
+        title : "Washing Machine"
+      })
+      .then((docRef) => {
+        console.log("Product has been added ",docRef);
+      })
+      .catch((error) => {
+        console.log("Error : ", error.message);
+      })
+  }
+
   render(){
     const {cartQuantity, loading, cartTotal} = this.state;
     return (
       <div className="App">
         <Navbar cartQuantity = {cartQuantity}/>
+        <button onClick = {this.addProduct} style = {{
+          padding : 10,
+          fontSize : 20,
+          borderRadius : 10
+        }}>Add a Product</button>
         <Cart
           products = {this.state.products}
           onIncreaseQuantity = {this.handleIncreaseQuantity}
