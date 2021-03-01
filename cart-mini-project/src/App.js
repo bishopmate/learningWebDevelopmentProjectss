@@ -35,6 +35,8 @@ class App extends React.Component {
     // })
     this.db
       .collection('products')
+      .where('price', '<=', 50000)
+      .where('price', '>=', 1000)
       .onSnapshot((snapshot) => {
         console.log(snapshot);
         snapshot.docs.map((doc) => {
