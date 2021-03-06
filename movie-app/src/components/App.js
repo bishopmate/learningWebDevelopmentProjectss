@@ -2,6 +2,7 @@ import React from 'react';
 import { data } from '../data';
 import Navbar from './Navbar';
 import MovieCard from './MovieCard'; 
+import { addMovies } from '../actions/index';
 
 class App extends React.Component{
   // console.log(this.props.store.getState());
@@ -14,21 +15,18 @@ class App extends React.Component{
     const { store } = this.props;
     store.subscribe(() => {
       console.log("UPDATED");
-      this.forceUpdate();
+      this.forceUpdate();// Not recommended to use, just doing it here.
     });
     // make api call
     // dispatch action
-    store.dispatch({
-      type : 'ADD_MOVIES',
-      movies : data 
-    });
+    store.dispatch(addMovies(data));
 
     console.log(this.props.store.getState());
   }
   render(){
-    console.log("RENDER");
+    console.log("RENDER", this.props.store.getState());
     const { store } = this.props;
-    const movies = store.getState();
+    const { list } = store.getState();
     return (
       <div className="App">
         <Navbar />
@@ -39,7 +37,7 @@ class App extends React.Component{
           </div>
 
           <div className = "list">
-            {movies.map((movie, index) => (
+            {list.map((movie, index) => (
               <MovieCard movie = {movie} key = {`movies-${index}`}/>
             ))}
           </div>
