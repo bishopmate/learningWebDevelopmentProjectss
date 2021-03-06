@@ -7,11 +7,19 @@ import App from './components/App';
 import movies from './reducers/index';
 
 const store  = createStore(movies);
-console.log(store);
+// console.log(store);
+// console.log('Before state',store.getState());
+
+// store.dispatch({
+//  type : 'ADD_MOVIES',
+//  movies : [{name : 'Superman'}] 
+// });
+
+// console.log('After state',store.getState());
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <App store = {store} />
   </React.StrictMode>,
   document.getElementById('root')
 );

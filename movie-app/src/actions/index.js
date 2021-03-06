@@ -1,7 +1,3 @@
 {
-  type : 'INCREASE_COUNT',
+  type : 'INCREASE_COUNT';
 }
-{
-  type : 'DECREASE_COUNT',
-}
-  
