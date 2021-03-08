@@ -1,37 +1,54 @@
 import { bindActionCreators } from "redux";
 import { ADD_MOVIES , ADD_FAVOURITE, UNFAVOURITE} from '../actions/index';
 
-const initialState = {
+const initialMovieState = {
   list : [],
   favourites : new Set(),
 
 }
 
-export default function movies(state = initialState, action){
-  // if(action.type === ADD_MOVIES){
-  //   return {
-  //     ...state,
-  //     list : action.movies
-  //   }
-  // }
+export function movies(state = initialMovieState, action){
+
   switch(action.type){
     case ADD_MOVIES : 
-      return {
-        ...state,
-        list : action.movies
-      }
+    return {
+      ...state,
+      list : action.movies
+    }
     case ADD_FAVOURITE :
       return {
         ...state,
         favourites : state.favourites.add(action.movie)
       }
-    case UNFAVOURITE : 
+      case UNFAVOURITE : 
       let newSet = new Set(state.favourites);
       newSet.delete(action.movie);
       return {
         ...state,
         favourites : newSet
       }
-    default : return state;
+      default : return state;
+  }
+
+}
+      
+      
+const initialSearchState = {
+  result : []
+}
+
+export function search(state = initialSearchState, action){
+  return state;
+}
+
+const initialRootState = {
+  movies : initialMovieState,
+  search : initialSearchState
+}
+
+export default function rootReducer(state = initialRootState, action){
+  return {
+    movies : movies(state.movies, action),
+    search : search(state.search, action)
   }
 }

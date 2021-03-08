@@ -1,5 +1,4 @@
 import React from 'react';
-import {data} from '../data'
 import { addFavourite, unFavourite } from '../actions/index'
 
 class MovieCard extends React.Component{
