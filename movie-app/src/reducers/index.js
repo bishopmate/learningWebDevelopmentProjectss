@@ -21,14 +21,14 @@ export function movies(state = initialMovieState, action){
         ...state,
         favourites : state.favourites.add(action.movie)
       }
-      case UNFAVOURITE : 
+    case UNFAVOURITE : 
       let newSet = new Set(state.favourites);
       newSet.delete(action.movie);
       return {
         ...state,
         favourites : newSet
       }
-      default : return state;
+    default : return state;
   }
 
 }

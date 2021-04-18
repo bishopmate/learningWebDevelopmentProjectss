@@ -1,7 +1,9 @@
 export const ADD_MOVIES = "ADD_MOVIES";
 export const ADD_FAVOURITE = "ADD_FAVOURITE";
 export const UNFAVOURITE = "UNFAVOURITE";
-
+// not recommended in a production code, in that case fetch API key from backend only
+const OMDB_API_KEY = process.env.REACT_APP_OMDB_API_KEY;
+// Action Creators
 export function addMovies(movies){
   return {
     type : ADD_MOVIES,
@@ -21,4 +23,11 @@ export function unFavourite(movie){
     type : UNFAVOURITE,
     movie
   }
+}
+
+export function handleMovieSearch(movie){
+  console.log(OMDB_API_KEY);
+  const url = `http://www.omdbapi.com/?t=${movie}&apikey=${OMDB_API_KEY}`
+  fetch(url)
+    .then(response => console.log(response));
 }
