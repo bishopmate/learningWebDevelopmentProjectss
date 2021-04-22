@@ -26,8 +26,15 @@ export function unFavourite(movie){
 }
 
 export function handleMovieSearch(movie){
-  console.log(OMDB_API_KEY);
-  const url = `http://www.omdbapi.com/?t=${movie}&apikey=${OMDB_API_KEY}`
-  fetch(url)
-    .then(response => console.log(response));
+  const url = `http://www.omdbapi.com/?t=${movie}&apikey=${OMDB_API_KEY}`;
+  return function(dispatch){
+    fetch(url)
+    .then(response => response.json())
+    .then(movie => {
+      console.log("movie ", movie);
+    })
+  }
+
+
+  
 }

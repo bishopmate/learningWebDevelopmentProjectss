@@ -20,6 +20,13 @@ const store  = createStore(rootReducer, applyMiddleware(logger));
 // });
 // console.log('After state',store.getState());
 
+const thunk = ({dispatch, getState}) => (next) => (action) => {
+  if(typeof action === 'function'){
+    action(dispatch);
+    return;
+  };
+  next(action);
+}
 ReactDOM.render(
   <React.StrictMode>
     <App store = {store} />
