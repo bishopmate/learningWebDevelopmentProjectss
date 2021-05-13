@@ -3,7 +3,6 @@ const app = express();
 const articleRouter = require('./routes/articles');
 const PORT = 5500;
 
-
 app.set('view engine', 'ejs');
 app.use('/articles', articleRouter);
 
