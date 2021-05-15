@@ -1,10 +1,12 @@
 const express = require('express')
+const methodOverride = require('method-override');
 const app = express();
 const Article = require('./models/aritcles');
 const mongoose = require('mongoose');
 const articleRouter = require('./routes/articles');
 const PORT = 5500;
 
+app.use(methodOverride('_method'));
 mongoose.connect('mongodb://localhost/blog', {
   useNewUrlParser : true,
   useUnifiedTopology : true,
