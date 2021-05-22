@@ -3,12 +3,18 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
-
+var dotenv = require('dotenv');
+var mongoose = require('mongoose');
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
-
+dotenv.config({ path : '.env'});
+dotenv.config();
 var app = express();
-
+var mongoDB = `mongodb+srv://sam000013:${process.env.PASSWORD}@local-library.nosih.mongodb.net/local_library?retryWrites=true&w=majority`;
+mongoose.connect(mongoDB, {useNewUrlParser : true, useUnifiedTopology : true});
+var db = mongoose.connection;
+db.on('error', console.error.bind(console, 
+  'MongoDB connection error'));
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
