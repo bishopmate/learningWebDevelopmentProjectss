@@ -1,0 +1,24 @@
+
+.LoginAndLogo{
+  margin : 0.5rem;
+  display:flex;
+}
+.Logo{
+  width : 50%;
+}
+.Login{
+  /* position: absolute; */
+  position: relative;
+  /* right: 10; */
+  width : 50%;
+  background-color:aqua;
+}
+.Login a{
+  /* position: absolute; */
+  /* right: 200px; */
+  color : white;
+  margin : 0.7rem;
+  padding : 0.3em;
+  background-color: blue;
+  text-decoration : none;
+}
