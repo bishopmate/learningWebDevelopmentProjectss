@@ -35,8 +35,8 @@ class App extends React.Component {
     // })
     this.db
       .collection('products')
-      .where('price', '<=', 50000)
-      .where('price', '>=', 1000)
+      .where('price', '<=', 500000)
+      .where('price', '>=', 1)
       .onSnapshot((snapshot) => {
         console.log(snapshot);
         snapshot.docs.map((doc) => {
@@ -86,7 +86,7 @@ class App extends React.Component {
     products[index].quantity -= 1;
     cartQuantity -= 1;
     cartTotal -= products[index].price;
-    if(products[index].quantity > 0){
+    if(products[index].quantity >= 0){
       this.setState({ 
         cartQuantity,
         cartTotal
@@ -102,10 +102,11 @@ class App extends React.Component {
         .catch((error) => {
           console.log("Error : ", error.message);
         });
-    }else{
-      this.handleDeleteProduct(products[index].id, true);
-      return;
     }
+    // else{
+    //   this.handleDeleteProduct(products[index].id, true);
+    //   return;
+    // }
     
   }
 
